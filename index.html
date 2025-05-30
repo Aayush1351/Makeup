@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glam Canvas - Professional Makeup Artist</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #9a8574;
+        --primary-light: #b6a79a;
+        --primary-dark: #7d6a5c;
+        --text-dark: #333333;
+        --text-light: #ffffff;
+        --background-light: #f8f8f8;
+        --background-off: #f3f1ee;
+        --border-color: #e6e6e6;
+      }
+
+      body {
+        font-family: 'Montserrat', sans-serif;
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+      }
+
+      .main-container {
+        min-height: calc(100vh - 80px);
+      }
+
+      .section {
+        display: none;
+        padding: 2rem 1rem;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: var(--text-light);
+        transition: background-color 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .book-btn {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.875rem;
+        transition: all 0.3s;
+      }
+
+      .book-btn:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .nav-link {
+        color: var(--text-dark);
+        position: relative;
+        padding-bottom: 4px;
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after,
+      .nav-link.active::after {
+        width: 100%;
+      }
+
+      .nav-link.active {
+        color: var(--primary);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        overflow: auto;
+      }
+
+      .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 2rem;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 0.5rem;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .form-control {
+        border: 1px solid var(--border-color);
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .checkbox-group {
+        margin-bottom: 1rem;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .gallery-item {
+        overflow: hidden;
+        height: 300px;
+        position: relative;
+        border-radius: 0.25rem;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.05);
+      }
+
+      .about-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      @media (min-width: 768px) {
+        .about-section {
+          flex-direction: row;
+        }
+      }
+
+      .pricing-card {
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .service-img {
+        height: 250px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+
+      .service-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-section {
+        height: calc(100vh - 80px);
+        background-color: var(--background-off);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 90%;
+        max-width: 800px;
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 2.5rem;
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        height: 2px;
+        width: 60px;
+        background-color: var(--primary);
+      }
+
+      .service-feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .service-feature i {
+        color: var(--primary);
+        margin-right: 0.5rem;
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .portfolio-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .portfolio-filter {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .portfolio-filter:hover,
+      .portfolio-filter.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .contact-info {
+        margin-top: 2rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Navigation -->
+    <header class="py-4 px-6 border-b border-gray-200 bg-white sticky top-0 z-50">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center">
+          <!-- Logo -->
+          <div class="text-2xl font-semibold">
+            <a href="#" class="flex items-center" onclick="showSection('home')">
+              <span class="text-primary">Glam</span><span>Canvas</span>
+            </a>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="hidden md:flex space-x-8">
+            <a href="#" class="nav-link active" onclick="showSection('home')">Home</a>
+            <a href="#" class="nav-link" onclick="showSection('gallery')">Gallery</a>
+            <a href="#" class="nav-link" onclick="showSection('about')">About</a>
+            <a href="#" class="nav-link" onclick="showSection('portfolio')">Portfolio</a>
+            <a href="#" class="nav-link" onclick="showSection('investments')">Investments</a>
+          </nav>
+
+          <!-- Book Session Button -->
+          <button class="book-btn" onclick="openBookingModal()">Book a Session</button>
+
+          <!-- Mobile Menu Toggle -->
+          <div class="md:hidden">
+            <button id="menu-toggle" class="text-gray-600 focus:outline-none">
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
+          <a href="#" class="block py-2" onclick="showSection('home')">Home</a>
+          <a href="#" class="block py-2" onclick="showSection('gallery')">Gallery</a>
+          <a href="#" class="block py-2" onclick="showSection('about')">About</a>
+          <a href="#" class="block py-2" onclick="showSection('portfolio')">Portfolio</a>
+          <a href="#" class="block py-2" onclick="showSection('investments')">Investments</a>
+          <button class="book-btn mt-4 w-full" onclick="openBookingModal()">Book a Session</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+      <!-- Home Section -->
+      <section id="home" class="section active">
+        <div class="hero-section">
+          <div class="hero-content">
+            <h1 class="text-5xl md:text-6xl font-light mb-4">Transform Your Beauty</h1>
+            <p class="text-lg md:text-xl mb-8">Professional makeup artistry for every occasion</p>
+            <button class="book-btn text-base px-8 py-3" onclick="openBookingModal()">
+              Book Your Session
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Services -->
+        <div class="container mx-auto py-16 px-4">
+          <h2 class="text-3xl md:text-4xl mb-12 text-center">Services We Offer</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center p-6 hover:shadow-lg transition-all">
+              <div class="feature-icon">
+                <i class="fas fa-paint-brush"></i>
+              </div>
+              <h3 class="text-xl mb-3">Bridal Makeup</h3>
+              <p>Perfect makeup application to make your special day unforgettable</p>
+            </div>
+
+            <div class="text-center p-6 hover:shadow-lg transition-all">
+              <div class="feature-icon">
+                <i class="fas fa-cut"></i>
+              </div>
+              <h3 class="text-xl mb-3">Hair Styling</h3>
+              <p>Stunning hairstyles tailored to your preferences and occasion</p>
+            </div>
+
+            <div class="text-center p-6 hover:shadow-lg transition-all">
+              <div class="feature-icon">
+                <i class="fas fa-camera"></i>
+              </div>
+              <h3 class="text-xl mb-3">Photoshoot Styling</h3>
+              <p>Fashion, editorial, and commercial makeup for photoshoots</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="bg-gray-50 py-16">
+          <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl mb-12 text-center">Client Testimonials</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="bg-white p-6 shadow-sm rounded">
+                <div class="text-yellow-500 mb-4">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="italic mb-4">
+                  "The makeup was flawless and stayed perfect throughout my wedding day. Highly
+                  recommended!"
+                </p>
+                <p class="font-semibold">- Sarah Mitchell</p>
+              </div>
+
+              <div class="bg-white p-6 shadow-sm rounded">
+                <div class="text-yellow-500 mb-4">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="italic mb-4">
+                  "I felt so confident and beautiful for my graduation photoshoot. Thank you for
+                  making me look amazing!"
+                </p>
+                <p class="font-semibold">- Jennifer Lee</p>
+              </div>
+
+              <div class="bg-white p-6 shadow-sm rounded">
+                <div class="text-yellow-500 mb-4">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="italic mb-4">
+                  "Professional, punctual and extremely talented. My bridesmaids and I were all
+                  thrilled with our looks."
+                </p>
+                <p class="font-semibold">- Emma Watson</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section id="gallery" class="section container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl mb-2 section-title">Gallery</h2>
+        <p class="mb-8">Browse through our collection of makeup transformations and beauty works</p>
+
+        <div class="portfolio-filters">
+          <div class="portfolio-filter active" data-filter="all">All</div>
+          <div class="portfolio-filter" data-filter="bridal">Bridal</div>
+          <div class="portfolio-filter" data-filter="editorial">Editorial</div>
+          <div class="portfolio-filter" data-filter="hair">Hair Styling</div>
+          <div class="portfolio-filter" data-filter="special">Special Events</div>
+        </div>
+
+        <div class="gallery-grid">
+          <!-- Gallery items will be dynamically added here when content is available -->
+          <div class="gallery-item" data-category="bridal">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Bridal Makeup Image</p>
+            </div>
+          </div>
+          <div class="gallery-item" data-category="editorial">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Editorial Look Image</p>
+            </div>
+          </div>
+          <div class="gallery-item" data-category="hair">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Hair Styling Image</p>
+            </div>
+          </div>
+          <div class="gallery-item" data-category="special">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Special Event Makeup</p>
+            </div>
+          </div>
+          <div class="gallery-item" data-category="bridal">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Bridal Hair and Makeup</p>
+            </div>
+          </div>
+          <div class="gallery-item" data-category="editorial">
+            <div class="h-full bg-gray-200 flex items-center justify-center">
+              <p class="text-gray-500">Fashion Photoshoot Look</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <p class="text-gray-500 mb-4">Want to see more of our work?</p>
+          <button class="book-btn" onclick="showSection('portfolio')">View Portfolio</button>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="section container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl mb-2 section-title">About Me</h2>
+
+        <div class="about-section">
+          <div class="w-full md:w-2/5">
+            <div class="h-96 bg-gray-200 rounded overflow-hidden">
+              <div class="h-full flex items-center justify-center">
+                <p class="text-gray-500">Artist Portrait</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full md:w-3/5">
+            <h3 class="text-2xl mb-4">Professional Makeup Artist</h3>
+
+            <p class="mb-4">
+              Hello! I'm a passionate and creative makeup artist with over 8 years of experience in
+              the beauty industry. My journey began with a fascination for colors and textures,
+              which naturally evolved into a love for the transformative power of makeup.
+            </p>
+
+            <p class="mb-4">
+              I specialize in creating looks that enhance natural beauty while achieving the perfect
+              balance between timeless elegance and current trends. Whether it's bridal makeup that
+              needs to last all day, editorial looks that make a statement, or everyday beauty that
+              boosts confidence, I approach each client with personalized attention and care.
+            </p>
+
+            <p class="mb-4">
+              My philosophy is simple: makeup should make you feel like the best version of
+              yourself. I believe in using high-quality products that not only look stunning but
+              also take care of your skin.
+            </p>
+
+            <p class="mb-4">
+              I've had the privilege of working with clients from diverse backgrounds for weddings,
+              photoshoots, special events, and one-on-one makeup lessons. Each experience has
+              enriched my skills and deepened my appreciation for this art form.
+            </p>
+
+            <button class="book-btn mt-6" onclick="openContactModal()">Contact Me</button>
+
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <span>contact@glamcanvas.com</span>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <span>+1 (555) 123-4567</span>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span>New York City, NY</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="section container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl mb-2 section-title">Portfolio</h2>
+        <p class="mb-8">A curated selection of my best makeup and hair styling work</p>
+
+        <div class="portfolio-filters">
+          <div class="portfolio-filter active" data-filter="all">All Projects</div>
+          <div class="portfolio-filter" data-filter="wedding">Wedding</div>
+          <div class="portfolio-filter" data-filter="editorial">Editorial</div>
+          <div class="portfolio-filter" data-filter="commercial">Commercial</div>
+          <div class="portfolio-filter" data-filter="event">Special Events</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <div class="portfolio-item" data-category="wedding">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Wedding Makeup Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Summer Wedding Collection</h3>
+                <p class="text-gray-600">Bridal makeup and hair for summer weddings</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-category="editorial">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Fashion Editorial Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Vogue Inspired Shoot</h3>
+                <p class="text-gray-600">Editorial makeup for fashion magazine</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-category="commercial">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Commercial Work Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Beauty Brand Campaign</h3>
+                <p class="text-gray-600">Commercial makeup for skincare line</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-category="event">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Special Event Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Red Carpet Ready</h3>
+                <p class="text-gray-600">Makeup for galas and award ceremonies</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-category="wedding">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Bridal Hair Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Elegant Updos</h3>
+                <p class="text-gray-600">Bridal hair styling collection</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-category="editorial">
+            <div class="overflow-hidden rounded">
+              <div class="h-80 bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Avant-garde Portfolio</p>
+              </div>
+              <div class="p-4">
+                <h3 class="text-xl mb-1">Creative Color Story</h3>
+                <p class="text-gray-600">Artistic editorial makeup concepts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Investments/Pricing Section -->
+      <section id="investments" class="section container mx-auto px-4 py-16">
+        <h2 class="text-3xl md:text-4xl mb-2 section-title">Pricing & Packages</h2>
+        <p class="mb-12">Invest in looking and feeling your absolute best</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Wedding Package -->
+          <div class="pricing-card">
+            <div class="service-img">
+              <div class="h-full bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Wedding Makeup Image</p>
+              </div>
+            </div>
+
+            <h3 class="text-2xl mb-2">Weddings</h3>
+            <p class="text-xl text-primary mb-6">Starting at $1,500</p>
+
+            <div class="mb-6">
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>One-hour Consultation</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Engagement Session</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Milestone Session</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>200 Album Credit</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Online Gallery</span>
+              </div>
+            </div>
+
+            <button class="book-btn w-full" onclick="openBookingModal('Wedding')">Book Now</button>
+          </div>
+
+          <!-- Special Events Package -->
+          <div class="pricing-card">
+            <div class="service-img">
+              <div class="h-full bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Special Event Makeup Image</p>
+              </div>
+            </div>
+
+            <h3 class="text-2xl mb-2">Special Events</h3>
+            <p class="text-xl text-primary mb-6">Starting at $350</p>
+
+            <div class="mb-6">
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Pre-event Consultation</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Full-face Makeup Application</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Lashes Included</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Touch-up Kit</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Digital Lookbook</span>
+              </div>
+            </div>
+
+            <button class="book-btn w-full" onclick="openBookingModal('Special Event')">
+              Book Now
+            </button>
+          </div>
+
+          <!-- Hair Styling Package -->
+          <div class="pricing-card">
+            <div class="service-img">
+              <div class="h-full bg-gray-200 flex items-center justify-center">
+                <p class="text-gray-500">Hair Styling Image</p>
+              </div>
+            </div>
+
+            <h3 class="text-2xl mb-2">Hair Styling</h3>
+            <p class="text-xl text-primary mb-6">Starting at $250</p>
+
+            <div class="mb-6">
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Style Consultation</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Blow Out and Styling</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Hair Extensions Application</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Haircare Recommendations</span>
+              </div>
+              <div class="service-feature">
+                <i class="fas fa-check"></i>
+                <span>Style Maintenance Tips</span>
+              </div>
+            </div>
+
+            <button class="book-btn w-full" onclick="openBookingModal('Hair Styling')">
+              Book Now
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-16 text-center">
+          <h3 class="text-2xl mb-4">Additional Services</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 border border-gray-200 rounded">
+              <h4 class="text-lg mb-2">Nail Art</h4>
+              <p class="text-primary font-medium">From $75</p>
+            </div>
+
+            <div class="p-4 border border-gray-200 rounded">
+              <h4 class="text-lg mb-2">Hair Coloring</h4>
+              <p class="text-primary font-medium">From $120</p>
+            </div>
+
+            <div class="p-4 border border-gray-200 rounded">
+              <h4 class="text-lg mb-2">Hair Cutting</h4>
+              <p class="text-primary font-medium">From $80</p>
+            </div>
+
+            <div class="p-4 border border-gray-200 rounded">
+              <h4 class="text-lg mb-2">Makeup Lessons</h4>
+              <p class="text-primary font-medium">From $150</p>
+            </div>
+          </div>
+
+          <button class="book-btn mt-8" onclick="openBookingModal()">Book Your Service</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-xl mb-4">GlamCanvas</h3>
+            <p class="mb-4">
+              Transforming beauty through the art of makeup. Available for weddings, special events,
+              photoshoots and more.
+            </p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-white hover:text-primary transition-colors"
+                ><i class="fab fa-instagram text-xl"></i
+              ></a>
+              <a href="#" class="text-white hover:text-primary transition-colors"
+                ><i class="fab fa-facebook text-xl"></i
+              ></a>
+              <a href="#" class="text-white hover:text-primary transition-colors"
+                ><i class="fab fa-pinterest text-xl"></i
+              ></a>
+              <a href="#" class="text-white hover:text-primary transition-colors"
+                ><i class="fab fa-tiktok text-xl"></i
+              ></a>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors"
+                  onclick="showSection('home')"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors"
+                  onclick="showSection('gallery')"
+                  >Gallery</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors"
+                  onclick="showSection('about')"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors"
+                  onclick="showSection('portfolio')"
+                  >Portfolio</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors"
+                  onclick="showSection('investments')"
+                  >Investments</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl mb-4">Contact Info</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center">
+                <i class="fas fa-map-marker-alt mr-2"></i> New York City, NY
+              </li>
+              <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</li>
+              <li class="flex items-center">
+                <i class="fas fa-envelope mr-2"></i> contact@glamcanvas.com
+              </li>
+              <li class="mt-4">
+                <button class="book-btn" onclick="openBookingModal()">Book a Session</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <p>&copy; 2023 GlamCanvas - All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeBookingModal()">&times;</span>
+
+        <h2 class="text-2xl mb-6">Book a Session</h2>
+
+        <form id="booking-form" onsubmit="submitBookingForm(event)">
+          <div class="mb-4">
+            <label for="name" class="block mb-2">Full Name</label>
+            <input type="text" id="name" name="name" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="email" class="block mb-2">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="phone" class="block mb-2">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="date" class="block mb-2">Preferred Date</label>
+            <input type="date" id="date" name="date" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="time" class="block mb-2">Preferred Time</label>
+            <input type="time" id="time" name="time" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label class="block mb-2">Service Type</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 checkbox-group">
+              <div class="flex items-center">
+                <input type="checkbox" id="makeup" name="service" value="makeup" class="mr-2" />
+                <label for="makeup">Makeup Application</label>
+              </div>
+
+              <div class="flex items-center">
+                <input type="checkbox" id="hair" name="service" value="hair" class="mr-2" />
+                <label for="hair">Hair Styling</label>
+              </div>
+
+              <div class="flex items-center">
+                <input type="checkbox" id="nails" name="service" value="nails" class="mr-2" />
+                <label for="nails">Nail Art</label>
+              </div>
+
+              <div class="flex items-center">
+                <input
+                  type="checkbox"
+                  id="haircolor"
+                  name="service"
+                  value="haircolor"
+                  class="mr-2"
+                />
+                <label for="haircolor">Hair Coloring</label>
+              </div>
+
+              <div class="flex items-center">
+                <input type="checkbox" id="haircut" name="service" value="haircut" class="mr-2" />
+                <label for="haircut">Hair Cutting</label>
+              </div>
+
+              <div class="flex items-center">
+                <input type="checkbox" id="other" name="service" value="other" class="mr-2" />
+                <label for="other">Other</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="message" class="block mb-2">Additional Information</label>
+            <textarea id="message" name="message" class="form-control" rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="book-btn w-full py-3">Submit Request</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeContactModal()">&times;</span>
+
+        <h2 class="text-2xl mb-6">Get In Touch</h2>
+
+        <form id="contact-form" onsubmit="submitContactForm(event)">
+          <div class="mb-4">
+            <label for="contact-name" class="block mb-2">Full Name</label>
+            <input type="text" id="contact-name" name="name" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="contact-email" class="block mb-2">Email Address</label>
+            <input type="email" id="contact-email" name="email" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="contact-subject" class="block mb-2">Subject</label>
+            <input type="text" id="contact-subject" name="subject" class="form-control" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="contact-message" class="block mb-2">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              class="form-control"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="book-btn w-full py-3">Send Message</button>
+        </form>
+
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <h3 class="text-xl mb-4">Other Ways to Connect</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center">
+              <div
+                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-3"
+              >
+                <i class="fas fa-phone"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Call us at</p>
+                <p>+1 (555) 123-4567</p>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div
+                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-3"
+              >
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Email us at</p>
+                <p>contact@glamcanvas.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Navigation Functions
+      function showSection(sectionId) {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        sections.forEach((section) => {
+          section.classList.remove('active');
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove('active');
+        });
+
+        document.getElementById(sectionId).classList.add('active');
+
+        // Find and activate the corresponding nav link
+        const activeNavLink = Array.from(navLinks).find((link) => {
+          return link.textContent.toLowerCase() === sectionId.toLowerCase();
+        });
+
+        if (activeNavLink) {
+          activeNavLink.classList.add('active');
+        }
+
+        // Hide mobile menu after selection
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu.classList.contains('block')) {
+          mobileMenu.classList.remove('block');
+          mobileMenu.classList.add('hidden');
+        }
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Mobile Menu Toggle
+      document.getElementById('menu-toggle').addEventListener('click', function () {
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.remove('hidden');
+          mobileMenu.classList.add('block');
+        } else {
+          mobileMenu.classList.remove('block');
+          mobileMenu.classList.add('hidden');
+        }
+      });
+
+      // Modal Functions
+      function openBookingModal(serviceType = '') {
+        const modal = document.getElementById('booking-modal');
+        modal.style.display = 'block';
+
+        // If a service type is specified, check the appropriate checkbox
+        if (serviceType) {
+          const checkboxes = document.querySelectorAll('#booking-form input[name="service"]');
+          checkboxes.forEach((checkbox) => {
+            if (checkbox.value.toLowerCase() === serviceType.toLowerCase()) {
+              checkbox.checked = true;
+            }
+          });
+        }
+      }
+
+      function closeBookingModal() {
+        const modal = document.getElementById('booking-modal');
+        modal.style.display = 'none';
+        document.getElementById('booking-form').reset();
+      }
+
+      function openContactModal() {
+        const modal = document.getElementById('contact-modal');
+        modal.style.display = 'block';
+      }
+
+      function closeContactModal() {
+        const modal = document.getElementById('contact-modal');
+        modal.style.display = 'none';
+        document.getElementById('contact-form').reset();
+      }
+
+      // Close modals when clicking outside
+      window.onclick = function (event) {
+        const bookingModal = document.getElementById('booking-modal');
+        const contactModal = document.getElementById('contact-modal');
+
+        if (event.target === bookingModal) {
+          closeBookingModal();
+        }
+
+        if (event.target === contactModal) {
+          closeContactModal();
+        }
+      };
+
+      // Form Submission Functions
+      function submitBookingForm(event) {
+        event.preventDefault();
+
+        // Get form data
+        const form = document.getElementById('booking-form');
+        const formData = new FormData(form);
+
+        // Normally, you would send this data to a server
+        // For now, we'll just show an alert
+        alert(
+          'Thank you for booking with us! We will contact you shortly to confirm your appointment.',
+        );
+
+        // Close the modal
+        closeBookingModal();
+      }
+
+      function submitContactForm(event) {
+        event.preventDefault();
+
+        // Get form data
+        const form = document.getElementById('contact-form');
+        const formData = new FormData(form);
+
+        // Normally, you would send this data to a server
+        // For now, we'll just show an alert
+        alert('Thank you for your message! We will get back to you as soon as possible.');
+
+        // Close the modal
+        closeContactModal();
+      }
+
+      // Portfolio/Gallery Filter Functions
+      document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('.portfolio-filter');
+
+        filterButtons.forEach((button) => {
+          button.addEventListener('click', function () {
+            const filterValue = this.getAttribute('data-filter');
+
+            // Update active filter button
+            filterButtons.forEach((btn) => {
+              btn.classList.remove('active');
+            });
+            this.classList.add('active');
+
+            // Filter items
+            const items = document.querySelectorAll('.portfolio-item, .gallery-item');
+            items.forEach((item) => {
+              if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                item.style.display = 'block';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
